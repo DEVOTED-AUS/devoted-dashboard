@@ -39,8 +39,7 @@ export function getXeroAuthUrl(state: string): string {
     response_type: 'code',
     client_id: process.env.XERO_CLIENT_ID!,
     redirect_uri: process.env.XERO_REDIRECT_URI!,
-    scope:
-      'accounting.reports.profitandloss.read accounting.settings.read openid profile email offline_access',
+    scope: 'accounting.reports.profitandloss.read accounting.settings.read offline_access openid',
     state,
   })
   return `${XERO_AUTH_URL}?${params}`
