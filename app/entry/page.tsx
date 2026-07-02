@@ -37,7 +37,6 @@ export default function EntryPage() {
 
   const gp = grossProfit(form)
   const np = netProfit(form)
-  const aov = form.orderCount > 0 ? form.revenue / form.orderCount : 0
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
@@ -98,7 +97,7 @@ export default function EntryPage() {
               />
             </Field>
             <div className="grid grid-cols-2 gap-4">
-              <Field label="Order count">
+              <Field label="Units Sold">
                 <input
                   type="number"
                   step="1"
@@ -166,7 +165,6 @@ export default function EntryPage() {
             <section className="rounded-xl border border-zinc-800 bg-zinc-900 px-5 py-4 space-y-2 text-sm">
               <p className="text-xs text-zinc-500 uppercase tracking-wider mb-3">Preview</p>
               <Row label="Revenue" value={aud(form.revenue)} />
-              <Row label="Avg Order Value" value={aov > 0 ? aud(aov) : '—'} />
               {form.cogs > 0 && <Row label="COGS" value={`− ${aud(form.cogs)}`} dimmed />}
               {(form.cogs > 0 || form.revenue > 0) && (
                 <Row label="Gross Profit" value={aud(gp)} valueClass={profitColor(gp)} bold />

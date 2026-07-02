@@ -39,11 +39,10 @@ export default function Dashboard() {
   }
 
   const totalRevenue = periods.reduce((s, p) => s + p.revenue, 0)
-  const totalOrders = periods.reduce((s, p) => s + p.orderCount, 0)
+  const totalUnits = periods.reduce((s, p) => s + p.orderCount, 0)
   const totalNewCustomers = periods.reduce((s, p) => s + p.newCustomers, 0)
   const totalGross = periods.reduce((s, p) => s + grossProfit(p), 0)
   const totalNet = periods.reduce((s, p) => s + netProfit(p), 0)
-  const avgOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0
   const totalGM = totalRevenue > 0 ? (totalGross / totalRevenue) * 100 : 0
   const totalNM = totalRevenue > 0 ? (totalNet / totalRevenue) * 100 : 0
 
@@ -61,10 +60,9 @@ export default function Dashboard() {
 
       <main className="mx-auto max-w-7xl px-6 py-8 space-y-8">
         {/* Summary cards */}
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           <MetricCard label="Total Revenue" value={aud(totalRevenue)} />
-          <MetricCard label="Orders" value={totalOrders.toLocaleString()} />
-          <MetricCard label="Avg Order Value" value={aud(avgOrderValue)} />
+          <MetricCard label="Units Sold" value={totalUnits.toLocaleString()} />
           <MetricCard label="New Customers" value={totalNewCustomers.toLocaleString()} />
           <MetricCard label="Gross Profit" value={aud(totalGross)} valueClass={profitColor(totalGross)} sub={pct(totalGM)} />
           <MetricCard label="Net Profit" value={aud(totalNet)} valueClass={profitColor(totalNet)} sub={pct(totalNM)} />
@@ -88,8 +86,7 @@ export default function Dashboard() {
                 <tr>
                   <th className="px-4 py-3 text-left font-medium">Period</th>
                   <th className="px-4 py-3 text-right font-medium">Revenue</th>
-                  <th className="px-4 py-3 text-right font-medium">Orders</th>
-                  <th className="px-4 py-3 text-right font-medium">AOV</th>
+                  <th className="px-4 py-3 text-right font-medium">Units Sold</th>
                   <th className="px-4 py-3 text-right font-medium">New Cust.</th>
                   <th className="px-4 py-3 text-right font-medium">COGS</th>
                   <th className="px-4 py-3 text-right font-medium">Mktg</th>
@@ -105,7 +102,6 @@ export default function Dashboard() {
                 {periods.map((p) => {
                   const gp = grossProfit(p)
                   const np = netProfit(p)
-                  const aov = p.orderCount > 0 ? p.revenue / p.orderCount : 0
                   return (
                     <tr key={p.id} className="hover:bg-zinc-900/60 transition-colors">
                       <td className="px-4 py-3">
@@ -120,7 +116,6 @@ export default function Dashboard() {
                       </td>
                       <td className="px-4 py-3 text-right font-mono text-zinc-100">{aud(p.revenue)}</td>
                       <td className="px-4 py-3 text-right font-mono text-zinc-300">{p.orderCount}</td>
-                      <td className="px-4 py-3 text-right font-mono text-zinc-300">{aud(aov)}</td>
                       <td className="px-4 py-3 text-right font-mono text-zinc-300">{p.newCustomers}</td>
                       <td className="px-4 py-3 text-right font-mono text-zinc-400">{p.cogs > 0 ? aud(p.cogs) : '—'}</td>
                       <td className="px-4 py-3 text-right font-mono text-zinc-400">{p.marketingSpend > 0 ? aud(p.marketingSpend) : '—'}</td>
@@ -146,8 +141,7 @@ export default function Dashboard() {
                   <tr>
                     <td className="px-4 py-3 text-zinc-300">Totals</td>
                     <td className="px-4 py-3 text-right font-mono text-zinc-100">{aud(totalRevenue)}</td>
-                    <td className="px-4 py-3 text-right font-mono text-zinc-300">{totalOrders}</td>
-                    <td className="px-4 py-3 text-right font-mono text-zinc-300">{aud(avgOrderValue)}</td>
+                    <td className="px-4 py-3 text-right font-mono text-zinc-300">{totalUnits}</td>
                     <td className="px-4 py-3 text-right font-mono text-zinc-300">{totalNewCustomers}</td>
                     <td className="px-4 py-3 text-right font-mono text-zinc-400">
                       {aud(periods.reduce((s, p) => s + p.cogs, 0))}
